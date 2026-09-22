@@ -1,9 +1,10 @@
 <template>
-    <div class="w-full h-16 flex-row flex-wrap justify-center items-center bg-bg text-text">
-        
-    </div>
+    <header>
+
+    </header>
 </template>
 
-<script lang="ts">
-
+<script setup lang="ts">
+import { RouterLink, RouterView } from 'vue-router'
+import { ref } from 'vue'
 </script>
