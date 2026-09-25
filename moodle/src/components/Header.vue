@@ -1,6 +1,6 @@
 <template>
-    <header>
-
+    <header class="">
+        asdf
     </header>
 </template>
 
