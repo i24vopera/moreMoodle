@@ -1,15 +1,18 @@
 <template>
   <div class="flex min-h-screen flex-col">
-    <Header />
+    <header class="bg-bg w-full h-16 border-b-2 border-b-surface flex flex-row flex-wrap justify-end items-center gap-6 p-4 text-xl font-condensed font-semibold">
+      <router-link to="" class="hover:underline underline-offset-4">Moje Kurzy</router-link>
+      <router-link to="" class="hover:underline underline-offset-4">Profil</router-link>
+    </header>
     <main class="grow transition-all duration-300">
       <RouterView />
     </main>
-    <Footer />
+    <footer class="w-full h-8 bg-bg border-t-2 border-t-surface flex flex-row flex-wrap justify-center items-center">
+      <p class="font-roboto">Website created by RV&MZ with 💙</p>
+    </footer>
   </div>
 </template>
 
 <script setup lang="ts">
 import { RouterLink, RouterView } from 'vue-router'
-import Header from './components/Header.vue'
-import Footer from './components/Footer.vue'
 </script>
