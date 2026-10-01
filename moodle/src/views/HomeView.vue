@@ -12,7 +12,7 @@
             </div>
         </div>
         <div class="" v-if="user">
-            Jste přihlášeni jako {{ user.email }}, {{ user.role }}
+            Jste přihlášeni jako {{ user.name }} {{ user.last_name }}, {{ user.role }}
             <br>
             <button class="hover:underline cursor-pointer underline-offset-2" @click="logout">Odhlásit se</button>
         </div>
@@ -24,7 +24,7 @@ import LoginPage from '@/components/LoginPage.vue';
 import { onMounted, ref } from 'vue';
 import { useUser } from '@/composables/useUser';
 
-const { user } = useUser()
+const { user, setUser } = useUser()
 
 let loggedIn = ref(false)
 let registerPage = ref(true)
@@ -41,6 +41,6 @@ const loginRegisterSwitch = () => {
 }
 
 const logout = () => {
-    user.value = null
+    setUser(null)
 }
 </script>

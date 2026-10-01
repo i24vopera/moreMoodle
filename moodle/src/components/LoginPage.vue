@@ -2,6 +2,8 @@
     <div class="" v-if="!user">
         <div class="flex flex-col justify-center items-center gap-4 my-16" v-if="registerPage">
             <p class="text-2xl font-condensed font-semibold uppercase text-text">Registrace</p>
+            <input type="text" v-model="name" placeholder="Jméno" class="w-120 h-8 bg-bg p-2 rounded-sm border-2 border-surface" />
+            <input type="text" v-model="lastName" placeholder="Příjmení" class="w-120 h-8 bg-bg p-2 rounded-sm border-2 border-surface" />
             <input type="email" v-model="email" placeholder="E-mail" class="w-120 h-8 bg-bg p-2 rounded-sm border-2 border-surface" />
             <input type="password" v-model="password" placeholder="Heslo" class="w-120 h-8 bg-bg p-2 rounded-sm border-2 border-surface" />
             <button @click="register" class="px-4 py-2 bg-accent text-white font-condensed uppercase font-semibold rounded-sm hover:bg-bg border-2 border-white hover:border-accent transition-all cursor-pointer duration-300 hover:text-accent">Registrovat</button>
@@ -29,16 +31,18 @@ const props = defineProps({
     registerPage: Boolean
 })
 
+const name = ref("")
+const lastName = ref("")
 const email = ref("")
 const password = ref("")
 const error = ref("")
 
-const send = async (path: string) => {
+const send = async (path: string, body: Record<string, string>) => {
     error.value = ""
     const res = await fetch(`${API}/auth/${path}`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ email: email.value, password: password.value }),
+        body: JSON.stringify(body),
     })
     const data = await res.json()
 
@@ -50,12 +54,20 @@ const send = async (path: string) => {
 }
 
 const register = async () => {
-    const data = await send("register")
+    const data = await send("register", {
+        email: email.value,
+        password: password.value,
+        name: name.value,
+        last_name: lastName.value,
+    })
     if (data) await login()
 }
 
 const login = async () => {
-    const data = await send("login")
-    if (data) user.value = data
+    const data = await send("login", {
+        email: email.value,
+        password: password.value,
+    })
+    if (data) setUser(data)
 }
 </script>

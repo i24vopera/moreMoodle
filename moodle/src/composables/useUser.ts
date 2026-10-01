@@ -1,9 +1,11 @@
-import { ref } from "vue"
+import { ref, readonly } from "vue"
 
 type UserObject = {
-    id: string
+    id: number
     email: string
     role: string
+    name: string
+    last_name: string
 } | null
 
 const user = ref<UserObject>(null)
@@ -15,6 +17,6 @@ export function useUser () {
 
     return {
         setUser,
-        user
+        user: readonly(user)
     }
 }
