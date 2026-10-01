@@ -2,6 +2,8 @@ import express from "express"
 import cors from "cors"
 import PG from "pg"
 import bcrypt from "bcryptjs"
+import jwt from "jsonwebtoken"
+import { Request, Response, NextFunction } from "express"
 
 type UserData = {
     id: number
@@ -17,12 +19,35 @@ app.use(express.json())
 
 const pool = new PG.Pool({ connectionString: process.env.DATABASE_URL })
 
-app.get("/api/health", async (req, res) => {
+const JWT_SECRET = process.env.JWT_SECRET
+
+if (!JWT_SECRET) throw new Error("Chybí JWT_SECRET v .env")
+
+type AuthedRequest = Request & { auth?: { id: number; role: string } }
+
+const requireAuth = (req: AuthedRequest, res: Response, next: NextFunction) => {
+    const header = req.headers.authorization
+    const token = header?.startsWith("Bearer ") ? header.slice(7) : null
+
+    if (!token) {
+        res.status(401).json({ error: "Chybí token" })
+        return
+    }
+
+    try {
+        req.auth = jwt.verify(token, JWT_SECRET) as { id: number; role: string }
+        next()
+    } catch {
+        // TADY TO DOROB VOLE
+    }
+}
+
+app.get("/api/health", async (req: any, res: any) => {
     const { rows } = await pool.query("SELECT now()")
     res.json({ ok: true, time: rows[0].now })
 })
 
-app.post("/api/auth/register", async (req, res) => {
+app.post("/api/auth/register", async (req: any, res: any) => {
     const { email, password, name, last_name } = req.body
     if (!email || !password || String(password).length < 8) {
         res.status(400).json({
@@ -64,7 +89,7 @@ app.post("/api/auth/register", async (req, res) => {
     }
 })
 
-app.post("/api/auth/login", async (req, res) => {
+app.post("/api/auth/login", async (req: any, res: any) => {
     const { email, password } = req.body
     const { rows } = await pool.query('SELECT * FROM users WHERE email = $1', [
         String(email).toLowerCase(),
