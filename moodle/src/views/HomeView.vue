@@ -11,12 +11,15 @@
                 <button @click="loginRegisterSwitch" class="hover:underline cursor-pointer">Zaregistrujte se</button>.
             </div>
         </div>
-
+        
+        <ProfileSection />
     </div>
 </template>
 
 <script lang="ts" setup>
 import LoginPage from '@/components/LoginPage.vue';
+import ProfileSection from '@/components/sections/ProfileSection.vue';
+
 import { onMounted, ref } from 'vue';
 import { useUser } from '@/composables/useUser';
 

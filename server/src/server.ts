@@ -11,6 +11,7 @@ type UserData = {
     role: string
     name: string
     last_name: string
+    created_at: Date | string
 }
 
 const app = express()
@@ -112,14 +113,15 @@ app.post("/api/auth/login", async (req: any, res: any) => {
             email: user.email,
             role: user.role,
             name: user.name,
-            last_name: user.last_name
+            last_name: user.last_name,
+            created_at: user.created_at
         }
     })
 })
 
 app.get("/api/me", requireAuth, async (req: AuthedRequest, res: any) => {
     const { rows } = await pool.query(
-        "SELECT id, email, role, name, last_name FROM users WHERE id = $1",
+        "SELECT id, email, role, name, last_name, created_at FROM users WHERE id = $1",
         [req.auth!.id]
     )
     if (!rows[0]) {

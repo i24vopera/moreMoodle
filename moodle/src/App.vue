@@ -1,10 +1,10 @@
 <template>
   <div class="flex min-h-screen flex-col">
     <header class="bg-bg w-full h-16 border-b-2 border-b-surface flex flex-row flex-wrap justify-between items-center gap-6 p-4 text-xl font-condensed font-semibold">
-      <p class="justify-self-start float-left text-2xl hidden md:block">MoreMoodle</p>
+      <p class="justify-self-start float-left text-2xl hidden md:block">MoreMůdl</p>
       <div class="justify-self-center font-normal hidden md:block">
         <div class="text-sm" v-if="user">
-            Jste přihlášeni jako {{ user.name }} {{ user.last_name }}, <span class="font-semibold">{{ user.role }}</span>
+            Jste přihlášeni jako {{ user.name }} {{ user.last_name }}, <span class="font-semibold">{{ user.role?.toUpperCase() }}</span>
             <button class="ml-4 hover:underline cursor-pointer underline-offset-2" @click="logout">Odhlásit se</button>
         </div>
       </div>

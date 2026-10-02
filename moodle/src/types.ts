@@ -4,4 +4,5 @@ export type UserObject = {
     role?: string
     name: string
     last_name: string
+    created_at: string
 } | null
