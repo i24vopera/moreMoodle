@@ -6,14 +6,14 @@
             <input type="text" v-model="lastName" placeholder="Příjmení" class="w-120 h-8 bg-bg p-2 rounded-sm border-2 border-surface" />
             <input type="email" v-model="email" placeholder="E-mail" class="w-120 h-8 bg-bg p-2 rounded-sm border-2 border-surface" />
             <input type="password" v-model="password" placeholder="Heslo" class="w-120 h-8 bg-bg p-2 rounded-sm border-2 border-surface" />
-            <button @click="register" class="px-4 py-2 bg-accent text-white font-condensed uppercase font-semibold rounded-sm hover:bg-bg border-2 border-white hover:border-accent transition-all cursor-pointer duration-300 hover:text-accent">Registrovat</button>
+            <button @click="register" class="px-4 py-2 bg-accent text-white font-condensed uppercase font-semibold rounded-sm hover:bg-bg border-2 border-accent hover:border-accent transition-all cursor-pointer duration-300 hover:text-accent">Registrovat</button>
             <p class="" v-if="error">{{ error }}</p>
         </div>
         <div class="flex flex-col justify-center items-center gap-4 my-16" v-else>
             <p class="text-2xl font-condensed font-semibold uppercase text-text">Přihlášení</p>
             <input type="email" v-model="email" placeholder="E-mail" class="w-120 h-8 bg-bg p-2 rounded-sm border-2 border-surface" />
             <input type="password" v-model="password" placeholder="Heslo" class="w-120 h-8 bg-bg p-2 rounded-sm border-2 border-surface" />
-            <button @click="login" class="px-4 py-2 bg-accent text-white font-condensed uppercase font-semibold rounded-sm hover:bg-bg border-2 border-white hover:border-accent transition-all cursor-pointer duration-300 hover:text-accent">Přihlásit se</button>
+            <button @click="login" class="px-4 py-2 bg-accent text-white font-condensed uppercase font-semibold rounded-sm hover:bg-bg border-2 border-accent hover:border-accent transition-all cursor-pointer duration-300 hover:text-accent">Přihlásit se</button>
             <p class="" v-if="error">{{ error }}</p>
         </div>
     </div>

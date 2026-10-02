@@ -1,12 +1,5 @@
 import { ref, readonly } from "vue"
-
-type UserObject = {
-    id: number
-    email: string
-    role: string
-    name: string
-    last_name: string
-} | null
+import type { UserObject } from "@/types"
 
 const user = ref<UserObject>(null)
 const token = ref<string | null>(localStorage.getItem("token"))

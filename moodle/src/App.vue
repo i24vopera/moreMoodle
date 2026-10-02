@@ -1,7 +1,13 @@
 <template>
   <div class="flex min-h-screen flex-col">
     <header class="bg-bg w-full h-16 border-b-2 border-b-surface flex flex-row flex-wrap justify-between items-center gap-6 p-4 text-xl font-condensed font-semibold">
-      <p class="justify-self-start float-left text-2xl">MoreMoodle</p>
+      <p class="justify-self-start float-left text-2xl hidden md:block">MoreMoodle</p>
+      <div class="justify-self-center font-normal hidden md:block">
+        <div class="text-sm" v-if="user">
+            Jste přihlášeni jako {{ user.name }} {{ user.last_name }}, <span class="font-semibold">{{ user.role }}</span>
+            <button class="ml-4 hover:underline cursor-pointer underline-offset-2" @click="logout">Odhlásit se</button>
+        </div>
+      </div>
       <div class="flex flex-row flex-wrap justify-end items-center gap-6">
         <router-link to="courses/" class="hover:underline underline-offset-4">Moje Kurzy</router-link>
         <router-link to="/" class="hover:underline underline-offset-4">Profil</router-link>
@@ -19,6 +25,9 @@
 <script setup lang="ts">
 import { RouterLink } from 'vue-router';
 import { RouterView } from 'vue-router';
+import { useUser } from './composables/useUser';
+
+const { user, logout } = useUser()
 
 import { onMounted, ref } from 'vue';
 </script>

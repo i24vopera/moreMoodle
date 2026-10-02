@@ -117,7 +117,7 @@ app.post("/api/auth/login", async (req: any, res: any) => {
     })
 })
 
-app.get("/api/me", requireAuth, async (req: AuthedRequest, res) => {
+app.get("/api/me", requireAuth, async (req: AuthedRequest, res: any) => {
     const { rows } = await pool.query(
         "SELECT id, email, role, name, last_name FROM users WHERE id = $1",
         [req.auth!.id]
