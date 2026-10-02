@@ -23,7 +23,7 @@
 import { ref } from 'vue';
 import { useUser } from '@/composables/useUser';
 
-const { setUser, user } = useUser()
+const { setSession, user } = useUser()
 
 const API = import.meta.env.VITE_API_URL
 
@@ -68,6 +68,6 @@ const login = async () => {
         email: email.value,
         password: password.value,
     })
-    if (data) setUser(data)
+    if (data) setSession(data.user, data.token)
 }
 </script>

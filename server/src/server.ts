@@ -38,7 +38,7 @@ const requireAuth = (req: AuthedRequest, res: Response, next: NextFunction) => {
         req.auth = jwt.verify(token, JWT_SECRET) as { id: number; role: string }
         next()
     } catch {
-        // TADY TO DOROB VOLE
+        res.status(401).json({ error: "Neplatný nebo expirovaný token" })
     }
 }
 
@@ -103,13 +103,30 @@ app.post("/api/auth/login", async (req: any, res: any) => {
         return
     }
 
-    res.json(<UserData>{
-        id: user.id,
-        email: user.email,
-        role: user.role,
-        name: user.name,
-        last_name: user.last_name
+    const token = jwt.sign({ id: user.id, role: user.role }, JWT_SECRET, { expiresIn: "7d" })
+
+    res.json({
+        token,
+        user: <UserData>{
+            id: user.id,
+            email: user.email,
+            role: user.role,
+            name: user.name,
+            last_name: user.last_name
+        }
     })
+})
+
+app.get("/api/me", requireAuth, async (req: AuthedRequest, res) => {
+    const { rows } = await pool.query(
+        "SELECT id, email, role, name, last_name FROM users WHERE id = $1",
+        [req.auth!.id]
+    )
+    if (!rows[0]) {
+        res.status(401).json({ error: "Uživatel neexistuje" })
+        return
+    }
+    res.json(rows[0])
 })
 
 app.listen(3000, () => console.log("API is running at :3000."))

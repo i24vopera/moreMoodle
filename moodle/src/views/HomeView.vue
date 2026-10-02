@@ -24,7 +24,7 @@ import LoginPage from '@/components/LoginPage.vue';
 import { onMounted, ref } from 'vue';
 import { useUser } from '@/composables/useUser';
 
-const { user, setUser } = useUser()
+const { user, logout } = useUser()
 
 let loggedIn = ref(false)
 let registerPage = ref(true)
@@ -38,9 +38,5 @@ let loginRegisterText = ref("Již máte účet? <button @click='loginRegisterSwi
 
 const loginRegisterSwitch = () => {
     registerPage.value = !registerPage.value
-}
-
-const logout = () => {
-    setUser(null)
 }
 </script>
