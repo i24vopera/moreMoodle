@@ -1,6 +1,6 @@
 <template>
     <div>
-        Kurzy
+        my kurzy
     </div>
 </template>
 

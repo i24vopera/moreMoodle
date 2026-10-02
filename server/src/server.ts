@@ -5,14 +5,9 @@ import bcrypt from "bcryptjs"
 import jwt from "jsonwebtoken"
 import { Request, Response, NextFunction } from "express"
 
-type UserData = {
-    id: number
-    email: string
-    role: string
-    name: string
-    last_name: string
-    created_at: Date | string
-}
+import type { UserData } from "./types.js"
+
+type AuthedRequest = Request & { auth?: { id: number; role: string } }
 
 const app = express()
 app.use(cors())
@@ -23,8 +18,6 @@ const pool = new PG.Pool({ connectionString: process.env.DATABASE_URL })
 const JWT_SECRET = process.env.JWT_SECRET
 
 if (!JWT_SECRET) throw new Error("Chybí JWT_SECRET v .env")
-
-type AuthedRequest = Request & { auth?: { id: number; role: string } }
 
 const requireAuth = (req: AuthedRequest, res: Response, next: NextFunction) => {
     const header = req.headers.authorization
@@ -129,6 +122,23 @@ app.get("/api/me", requireAuth, async (req: AuthedRequest, res: any) => {
         return
     }
     res.json(rows[0])
+})
+
+app.delete("/api/deleteAcc", async (req: any, res: any) => {
+    const id = Number(req.body.id)
+
+    try {
+        await pool.query(
+            "DELETE FROM users WHERE id = $1",
+            [id]
+        )
+        res.json({ deleted: true })
+    } catch (err: any) {
+        console.error(err)
+        res.status(500).json({
+            error: "Chyba serveru"
+        })
+    }
 })
 
 app.listen(3000, () => console.log("API is running at :3000."))
