@@ -141,4 +141,25 @@ app.delete("/api/deleteAcc", async (req: any, res: any) => {
     }
 })
 
+app.get("/api/getTeacher", async (req, res) => {
+    const id = req.query.id
+
+    try {
+        const { rows } = await pool.query(
+            "SELECT name, last_name FROM users WHERE id = $1",
+            [id]
+        )
+        const teacher = rows[0]
+        res.json({
+            name: teacher.name,
+            last_name: teacher.last_name
+        })
+    } catch (err: any) {
+        console.error(err)
+        res.status(500).json({
+            error: "Chyba serveru"
+        })
+    }
+})
+
 app.listen(3000, () => console.log("API is running at :3000."))
