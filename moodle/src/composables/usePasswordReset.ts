@@ -15,22 +15,31 @@ export function usePasswordReset() {
     }
 
     const resetPassword = async (oldPassword: string, newPassword: string) => {
-        const res = await fetch(`${API}/resetPassword`, {
-            method: "UPDATE",
-            headers: { "Content-Type": "application/json" },
-            body: JSON.stringify({
-                old_password: oldPassword,
-                new_password: newPassword
+        try {
+            const res = await fetch(`${API}/resetPassword`, {
+                method: "UPDATE",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify({
+                    old_password: oldPassword,
+                    new_password: newPassword
+                })
             })
-        })
-        const data = await res.json()
-        
+            const data = await res.json()
+            if (!data.error) {
+                setPassResError(data.output)
+            } else {
+                setPassResError(data.error)
+            }
+        } catch (err: any) {
+            setPassResError(err)
+        }
     }
 
     return {
         switchPassResPopup,
         setPassResError,
         passResError,
-        passResPopup: readonly(passResPopup)
+        passResPopup: readonly(passResPopup),
+        resetPassword
     }
 }

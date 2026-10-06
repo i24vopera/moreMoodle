@@ -9,6 +9,17 @@
       </div>
     </div>
   </div>
+  <div class="fixed z-10 w-full h-full bg-black/50" v-if="passResPopup">
+    <div class="fixed top-1/2 left-1/2 -translate-1/2 w-2xl bg-white p-4 rounded-xl">
+      <p class="text-2xl font-semibold font-roboto">Reset hesla</p>
+      <input type="text" v-model="old_password" placeholder="Aktuální heslo">
+      <input type="text" v-model="new_password" placeholder="Nové heslo">
+      <div class="flex flex-row flex-wrap justify-center items-center mt-8 gap-8">
+        <button class="bg-accent text-white font-condensed font-semibold text-xl uppercase px-6 py-3 rounded-md cursor-pointer hover:bg-white hover:text-accent border-2 border-accent transition-all duration-200" @click="switchDeletePopup">Zpět</button>
+        <button class="bg-red-500 text-white font-condensed font-semibold text-xl uppercase px-6 py-3 rounded-md cursor-pointer hover:bg-white hover:text-red-500 border-2 border-red-500 transition-all duration-200" @click="deleteAccount">Smazat účet</button>
+      </div>
+    </div>
+  </div>
   <div class="flex min-h-screen flex-col">
     <header class="bg-bg w-full h-16 border-b-2 border-b-surface flex flex-row flex-wrap justify-between items-center gap-6 p-4 text-xl font-condensed font-semibold">
       <p class="justify-self-start float-left text-2xl hidden md:block">MoreMůdl</p>
@@ -38,10 +49,15 @@ import { RouterLink, RouterView } from 'vue-router';
 import { ref } from 'vue';
 import { useUser } from './composables/useUser';
 import { deletePopup } from './composables/useDeletePopup';
+import { usePasswordReset } from './composables/usePasswordReset';
 
 const API = import.meta.env.VITE_API_URL
 const { user, logout } = useUser()
 const { popupActive, switchDeletePopup, setDeleteError } = deletePopup()
+const { passResPopup, resetPassword } = usePasswordReset()
+
+const old_password = ref("")
+const new_password = ref("")
 
 const deleteAccount = async () => {
   if (!user.value) return
@@ -59,5 +75,4 @@ const deleteAccount = async () => {
   switchDeletePopup()
   logout()
 }
-
 </script>
