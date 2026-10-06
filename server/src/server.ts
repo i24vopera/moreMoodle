@@ -141,7 +141,7 @@ app.delete("/api/deleteAcc", async (req: any, res: any) => {
     }
 })
 
-app.get("/api/getTeacher", async (req, res) => {
+app.get("/api/getTeacher", async (req: any, res: any) => {
     const id = req.query.id
 
     try {
@@ -160,6 +160,40 @@ app.get("/api/getTeacher", async (req, res) => {
             error: "Chyba serveru"
         })
     }
+})
+
+app.patch("/api/resetPassword", requireAuth, async (req: any, res: any) => {
+    const user_id = req.auth!.id
+    const { old_password, new_password } = req.body
+    try {
+        const { rows } = await pool.query(
+            "SELECT password_hash FROM users WHERE id = $1",
+            [user_id]
+        )
+    
+        const user = rows[0]
+        const ok = user && await bcrypt.compare(String(old_password), user.password_hash)
+        if (!ok) {
+            res.status(401).json({
+                error: "Neshodující se aktuální heslo!"
+            })
+            return
+        }
+    
+        const hash = await bcrypt.hash(String(new_password), 10)
+        await pool.query(
+            "UPDATE users SET password_hash = $1 WHERE id = $2",
+            [hash, user_id]
+        )
+        res.json({
+            message: "Heslo resetováno"
+        })
+    } catch (err) {
+        res.status(500).json({
+            error: "Chyba serveru"
+        })
+    }
+
 })
 
 app.listen(3000, () => console.log("API is running at :3000."))

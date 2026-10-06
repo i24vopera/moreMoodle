@@ -11,9 +11,9 @@
         </div>
     </div>
 
-    <div class="w-6xl mx-auto mt-16" v-if="user && user.role !== 'teacher'">
+    <div class="w-6xl mx-auto mt-16" v-if="user">
         <div class="flex flex-row flex-wrap gap-8">
-            <button class="bg-red-500 text-white font-condensed font-semibold text-xl uppercase px-6 py-3 rounded-md cursor-pointer hover:bg-white hover:text-red-500 border-2 border-red-500 transition-all duration-200" @click="switchDeletePopup">Smazat účet</button>
+            <button class="bg-red-500 text-white font-condensed font-semibold text-xl uppercase px-6 py-3 rounded-md cursor-pointer hover:bg-white hover:text-red-500 border-2 border-red-500 transition-all duration-200" @click="switchDeletePopup" v-if="user && user.role !== 'teacher'">Smazat účet</button>
             <PasswordReset />
         </div>
 

@@ -12,11 +12,13 @@
   <div class="fixed z-10 w-full h-full bg-black/50" v-if="passResPopup">
     <div class="fixed top-1/2 left-1/2 -translate-1/2 w-2xl bg-white p-4 rounded-xl">
       <p class="text-2xl font-semibold font-roboto">Reset hesla</p>
-      <input type="text" v-model="old_password" placeholder="Aktuální heslo">
-      <input type="text" v-model="new_password" placeholder="Nové heslo">
+      <div class="flex flex-col gap-4 my-8">
+        <input type="text" v-model="old_password" placeholder="Aktuální heslo" class="w-120 h-8 bg-bg p-2 rounded-sm border-2 border-surface">
+        <input type="text" v-model="new_password" placeholder="Nové heslo" class="w-120 h-8 bg-bg p-2 rounded-sm border-2 border-surface">
+      </div>
       <div class="flex flex-row flex-wrap justify-center items-center mt-8 gap-8">
-        <button class="bg-accent text-white font-condensed font-semibold text-xl uppercase px-6 py-3 rounded-md cursor-pointer hover:bg-white hover:text-accent border-2 border-accent transition-all duration-200" @click="switchDeletePopup">Zpět</button>
-        <button class="bg-red-500 text-white font-condensed font-semibold text-xl uppercase px-6 py-3 rounded-md cursor-pointer hover:bg-white hover:text-red-500 border-2 border-red-500 transition-all duration-200" @click="deleteAccount">Smazat účet</button>
+        <button class="bg-accent text-white font-condensed font-semibold text-xl uppercase px-6 py-3 rounded-md cursor-pointer hover:bg-white hover:text-accent border-2 border-accent transition-all duration-200" @click="switchPassResPopup">Zpět</button>
+        <button class="bg-red-500 text-white font-condensed font-semibold text-xl uppercase px-6 py-3 rounded-md cursor-pointer hover:bg-white hover:text-red-500 border-2 border-red-500 transition-all duration-200" @click="resetPasswordFun">Resetovat heslo</button>
       </div>
     </div>
   </div>
@@ -54,7 +56,7 @@ import { usePasswordReset } from './composables/usePasswordReset';
 const API = import.meta.env.VITE_API_URL
 const { user, logout } = useUser()
 const { popupActive, switchDeletePopup, setDeleteError } = deletePopup()
-const { passResPopup, resetPassword } = usePasswordReset()
+const { passResPopup, resetPassword, switchPassResPopup, setPassResError } = usePasswordReset()
 
 const old_password = ref("")
 const new_password = ref("")
@@ -74,5 +76,11 @@ const deleteAccount = async () => {
   }
   switchDeletePopup()
   logout()
+}
+
+const resetPasswordFun = () => {
+  setPassResError("")
+  resetPassword(old_password.value, new_password.value)
+  switchPassResPopup()
 }
 </script>
