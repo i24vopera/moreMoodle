@@ -6,6 +6,7 @@
             <input type="text" v-model="lastName" placeholder="Příjmení" class="w-120 h-8 bg-bg p-2 rounded-sm border-2 border-surface" />
             <input type="email" v-model="email" placeholder="E-mail" class="w-120 h-8 bg-bg p-2 rounded-sm border-2 border-surface" />
             <input type="password" v-model="password" placeholder="Heslo" class="w-120 h-8 bg-bg p-2 rounded-sm border-2 border-surface" />
+            <input type="password" v-model="password_check" placeholder="Heslo znovu" class="w-120 h-8 bg-bg p-2 rounded-sm border-2 border-surface" />
             <button @click="register" class="px-4 py-2 bg-accent text-white font-condensed uppercase font-semibold rounded-sm hover:bg-bg border-2 border-accent hover:border-accent transition-all cursor-pointer duration-200 hover:text-accent">Registrovat</button>
             <p class="" v-if="error">{{ error }}</p>
         </div>
@@ -36,6 +37,7 @@ const lastName = ref("")
 const email = ref("")
 const password = ref("")
 const error = ref("")
+const password_check = ref("")
 
 const send = async (path: string, body: Record<string, string>) => {
     error.value = ""
@@ -54,6 +56,11 @@ const send = async (path: string, body: Record<string, string>) => {
 }
 
 const register = async () => {
+    if (password.value != password_check.value) {
+        error.value = "Hesla nejsou stejná!"
+        return
+    }
+
     const data = await send("register", {
         email: email.value,
         password: password.value,

@@ -12,15 +12,24 @@
     </div>
 
     <div class="w-6xl mx-auto mt-16" v-if="user && user.role !== 'teacher'">
-        <button class="bg-red-500 text-white font-condensed font-semibold text-xl uppercase px-6 py-3 rounded-md cursor-pointer hover:bg-white hover:text-red-500 border-2 border-red-500 transition-all duration-200" @click="switchDeletePopup">Smazat účet</button>
+        <div class="flex flex-row flex-wrap gap-8">
+            <button class="bg-red-500 text-white font-condensed font-semibold text-xl uppercase px-6 py-3 rounded-md cursor-pointer hover:bg-white hover:text-red-500 border-2 border-red-500 transition-all duration-200" @click="switchDeletePopup">Smazat účet</button>
+            <PasswordReset />
+        </div>
+
         <p class="text-center text-xl font-semibold" v-if="deleteAccError">{{ deleteAccError }}</p>
+        <p class="text-center text-xl font-semibold" v-if="passResError">{{ passResError }}</p>
     </div>
 </template>
 
 <script setup lang="ts">
 import { useUser } from '@/composables/useUser';
 import { deletePopup } from '@/composables/useDeletePopup';
+import PasswordReset from '@/components/sections/PasswordReset.vue';
 import { ref } from 'vue';
+import { usePasswordReset } from '@/composables/usePasswordReset';
+
+const { passResError } = usePasswordReset()
 
 const { user } = useUser()
 const { switchDeletePopup, deleteAccError } = deletePopup()
